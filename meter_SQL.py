@@ -1,6 +1,6 @@
 # adapted from class example
-import requests, json
-from flask import Flask, Response,request
+import json
+from flask import Flask,request
 import MySQLdb
 #import time
 import datetime
@@ -20,9 +20,9 @@ c = db.cursor()
 
 c.execute('''CREATE TABLE IF NOT EXISTS tenants
     (id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(128) NOT NULL,
+    name VARCHAR(128),
     time_stamp VARCHAR(128) NOT NULL,
-    meter_ID VARCHAR(128),
+    meter_ID VARCHAR(128) NOT NULL,
     consumption VARCHAR(128) NOT NULL,
     PRIMARY KEY (id))''')
 
@@ -41,7 +41,12 @@ def add_consumption(term=''):
 		meter_ID = int(request.args['id'])
 		consumption = int(request.args['consumption'])
 		name = ID_TO_NAME[meter_ID]
-		c.execute('''INSERT INTO tenants (name, time_stamp, meter_ID, consumption) VALUES (%s, %s, %s, %s) ''', (name, time_stamp, meter_ID, consumption))
+		try:
+		    c.execute('''INSERT INTO tenants (name, time_stamp, meter_ID, consumption) VALUES (%s, %s, %s, %s) ''', (name, time_stamp, meter_ID, consumption))
+		except:
+		    db = MySQLdb.connect(host='dschurma.mysql.pythonanywhere-services.com', user='dschurma', passwd='jackroswell', db='dschurma$Meter_Readings', use_unicode=True, charset='UTF8')
+		    c = db.cursor()
+		    c.execute('''INSERT INTO tenants (name, time_stamp, meter_ID, consumption) VALUES (%s, %s, %s, %s) ''', (name, time_stamp, meter_ID, consumption))
 		db.commit()
 		return "success"
 	else:
@@ -54,11 +59,20 @@ def query_by_tenant_name():
 		now = datetime.datetime.now()
 		past_lower = now + relativedelta(months = -1)
 		past_upper = past_lower + relativedelta(days = +1)
-		c.execute("SELECT * FROM tenants WHERE time_stamp >= %s AND time_stamp < %s AND name = %s", (str(past_lower), str(past_upper), name))
+		try:
+		    c.execute("SELECT * FROM tenants WHERE time_stamp >= %s AND time_stamp < %s AND name = %s", (str(past_lower), str(past_upper), name))
+		except:
+		    db = MySQLdb.connect(host='dschurma.mysql.pythonanywhere-services.com', user='dschurma', passwd='jackroswell', db='dschurma$Meter_Readings', use_unicode=True, charset='UTF8')
+		    c = db.cursor()
+		    c.execute("SELECT * FROM tenants WHERE time_stamp >= %s AND time_stamp < %s AND name = %s", (str(past_lower), str(past_upper), name))
 		data_past = c.fetchmany(10)
 
 		now_lower = now + relativedelta(days = -1)
-		c.execute("SELECT * FROM tenants WHERE time_stamp >= %s AND time_stamp < %s AND name = %s", (str(now_lower), str(now), name))
+		try:
+		    c.execute("SELECT * FROM tenants WHERE time_stamp >= %s AND time_stamp < %s AND name = %s", (str(now_lower), str(now), name))
+		except:
+		    db = MySQLdb.connect(host='dschurma.mysql.pythonanywhere-services.com', user='dschurma', passwd='jackroswell', db='dschurma$Meter_Readings', use_unicode=True, charset='UTF8')
+		    c = db.cursor()
 		data_now = c.fetchmany(10)
 
 		if len(data_past) == 0:
@@ -68,6 +82,6 @@ def query_by_tenant_name():
 
 		consumption_now = data_now[-1][-1]
 		#return str(past_lower) + '<br>' + str(past_upper) + '<br>' + str(now_lower) + '<br>' + str(now) + '<br>' + str(data_past) + '<br>' + str(data_now) + '<br>' + str(int(consumption_now) - int(consumption_past)
-		return str(int(consumption_now) - int(consumption_past))
+		return json.dumps({'current_month':consumption_past, 'past_month':consumption_past, 'change':str(int(consumption_now) - int(consumption_past))})
 	else:
 		return 'Invalid parameters - need \"name\"'
