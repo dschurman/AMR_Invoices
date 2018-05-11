@@ -3,6 +3,8 @@ import sys
 import json
 import subprocess
 import time
+import datetime
+import requests
 
 def meter_read(id_list):
 	proc = None
@@ -20,8 +22,10 @@ def meter_read(id_list):
 
 	    data = json.loads(line.decode('utf-8'))
 	    message = [{"measurement":"consumption", "time": data['Time'], "tags": {"meter": data['Message']['ID'] }, "fields": {"value": data['Message']['Consumption']}}]
-	    print(message)
-	    time.sleep(1)
+	    print('***', message)
+	    params = {'consumption':data['Message']['Consumption'], 'time':datetime.datetime.now(), 'id':data['Message']['ID']}
+	    requests.get('http://dschurma.pythonanywhere.com/insert', params=params)
+	    time.sleep(5)
 
 def main():
 	id_list = []
