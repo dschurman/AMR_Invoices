@@ -25,7 +25,7 @@ def meter_read(id_list):
 def main():
 	id_list = []
 	for n in sys.argv[1:]:
-		id_list.append(int(n))
+		id_list.append(n)
 	
 	'''
 	if len(id_list) == 0:
