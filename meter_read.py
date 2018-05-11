@@ -14,6 +14,7 @@ def meter_read(id_list):
 
 	while True:
 	    line = proc.stdout.readline()
+	    print('***', line)
 	    if not line:
 	        break
 
