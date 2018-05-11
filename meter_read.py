@@ -7,10 +7,10 @@ import time
 def meter_read(id_list):
 	proc = None
 	if len(id_list) == 0:
-		proc = subprocess.Popen(['$GOPATH/bin/rtlamr', '-format=json', '-unique=true'], stdout = subprocess.PIPE)
+		proc = subprocess.Popen(['/home/pi/go/bin/rtlamr', '-format=json', '-unique=true'], stdout = subprocess.PIPE)
 	else:
-		id_str = '\"' + ','.join(id_list) + '\"'
-		proc = subprocess.Popen(['$GOPATH/bin/rtlamr', '-filterid=' + id_str, '-format=json', '-unique=true'], stdout = subprocess.PIPE)
+		id_str = ','.join(id_list)
+		proc = subprocess.Popen(['/home/pi/go/bin/rtlamr', '-filterid="' + id_str + '"', '-format=json', '-unique=true'], stdout = subprocess.PIPE)
 
 	while True:
 	    line = proc.stdout.readline()
