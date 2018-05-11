@@ -14,11 +14,11 @@ def meter_read(id_list):
 
 	while True:
 	    line = proc.stdout.readline()
-	    print('***', line)
+	    #print('***', line)
 	    if not line:
 	        break
 
-	    data = json.loads(line)
+	    data = json.loads(line.decode('utf-8'))
 	    message = [{"measurement":"consumption", "time": data['Time'], "tags": {"meter": data['Message']['ID'] }, "fields": {"value": data['Message']['Consumption']}}]
 	    print(message)
 	    time.sleep(1)
