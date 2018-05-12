@@ -15,8 +15,9 @@ class MyPDF(fpdf.FPDF):
 
 if __name__ == "__main__":
     # path to pythonanywhere PDF folder
-    OUT_PATH = '/home/dschurma/flask_SQL/invoice_pdfs/'
-
+    # OUT_PATH = '/home/dschurma/flask_SQL/invoice_pdfs/'
+    # path to local pdf folder
+    OUT_PATH = './pdfs/'
     # iterate through tenant names passed via command line
     for name in sys.argv[1:]:
         # create new PDF instance, configure settings
