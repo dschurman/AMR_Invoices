@@ -11,3 +11,7 @@ rtl_tcp (helpful installation instructions [here](https://photobyte.org/using-th
 Deployment (/insert to append to mySQL, /query_by_tenant to query mySQL):
 
 [dschurma.pythonanywhere.com](https://dschurma.pythonanywhere.com)
+
+See [the sample spreadsheet](
+https://docs.google.com/spreadsheets/d/1TRYBGVfX7MxZW_Zdk1KU23LdNNQpnMQoGqK6AY0Jrw0/edit?usp=sharing
+).
