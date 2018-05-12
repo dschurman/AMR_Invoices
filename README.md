@@ -1,6 +1,6 @@
-# AMR_Invoices
+# GAMIR: Generation of Automatic-Meter-Reading Invoices
 
-Allows Automatic Meter Reading (AMR) using an [RTL-SDR](https://www.amazon.com/gp/product/B011HVUEME/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1) and Raspberry Pi 3 with bemasher's [rtlamr](https://github.com/bemasher/rtlamr) library.
+Allows Automatic Meter Reading (AMR) using an [RTL-SDR](https://www.amazon.com/gp/product/B011HVUEME/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1) and Raspberry Pi 3 with bemasher's [rtlamr](https://github.com/bemasher/rtlamr) library. A tool for landlords to automatically generates invoice PDFs for their tenants. 
 
 Dependencies: 
 
