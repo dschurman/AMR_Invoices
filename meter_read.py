@@ -33,7 +33,7 @@ def meter_read(id_list):
 	    # send request to Flask app to insert into database
 	    params = {'consumption':data['Message']['Consumption'], 'time':datetime.datetime.now(), 'id':data['Message']['ID']}
 	    requests.get('http://dschurma.pythonanywhere.com/insert', params=params)
-	    # repeat every 5 seconds
+	    # repeat every 5 seconds 
 	    time.sleep(5)
 
 def main():
